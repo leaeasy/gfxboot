@@ -921,7 +921,7 @@ char *search_font(char *font_path, char *name)
   char *font_name = NULL;
   char *cur_path, *sep;
   struct stat sbuf;
-  static char *suffix[] = { "", ".ttf", ".pfa", ".pfb", ".pcf.gz" };
+  static char *suffix[] = { "", ".ttf", ".pfa", ".pfb", ".pcf.gz", ".bdf" };
 
   if(!font_path || !name) return NULL;
 
