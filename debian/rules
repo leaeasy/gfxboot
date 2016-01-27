@@ -42,9 +42,7 @@ override_dh_auto_build:
 
 override_dh_auto_clean:
 	dh_auto_clean
-
-	[ ! -f doc/Makefile ] || $(MAKE) -C doc clean
-
+	#[ ! -f doc/Makefile ] || $(MAKE) -C doc clean
 	-rm -rf build
 
 override_dh_auto_install:
