@@ -18,7 +18,7 @@ changelog: $(GITDEPS)
 	$(GIT2LOG) --changelog changelog
 
 gfxboot-font: gfxboot-font.c
-	$(CC) $(CFLAGS) -I /usr/include/freetype2 -lfreetype $< -o $@
+	$(CC) $(CFLAGS) -I /usr/include/freetype2 $< -lfreetype -o $@
 
 gfxboot-compile: gfxboot-compile.c vocabulary.h bincode.h
 	$(CC) $(CFLAGS) $< -o $@
