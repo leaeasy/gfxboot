@@ -12,7 +12,7 @@ THEMES	 = themes/upstream themes/openSUSE themes/SLES themes/SLED themes/KDE
 
 .PHONY: all clean distclean doc install installsrc themes
 
-all:	changelog bin2c gfxboot-compile bincode gfxboot-font addblack
+all: bin2c gfxboot-compile bincode gfxboot-font addblack
 
 changelog: $(GITDEPS)
 	$(GIT2LOG) --changelog changelog
