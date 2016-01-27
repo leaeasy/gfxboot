@@ -16,7 +16,7 @@ bootlogo: example_*.bc font
 	$(GFXBOOT) --archive $@.dir --pack-archive $@
 
 font:
-	$(GFXBOOT_FONT) -v -f DejaVuSans:size=20 font.fnt >font.log
+	$(GFXBOOT_FONT) -v -p /usr/share/fonts/truetype/ttf-dejavu -f DejaVuSans:size=20 font.fnt >font.log
 
 clean:
 	rm -rf *~ *.log *.dir bootlogo *.fnt

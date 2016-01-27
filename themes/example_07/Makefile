@@ -20,7 +20,7 @@ bootlogo: example_*.bc font
 	@ln -snf bootlogo message
 
 font:
-	$(GFXBOOT_FONT) -v -f DejaVuSans:size=32 font.fnt >font.log
+	$(GFXBOOT_FONT) -v -p /usr/share/fonts/truetype/ttf-dejavu -f DejaVuSans:size=32 font.fnt >font.log
 
 clean:
 	rm -rf *~ *.log *.dir bootlogo message *.fnt
