@@ -1,0 +1,15 @@
+Author: Colin Watson <cjwatson@ubuntu.com>
+Description: Try .bdf files in gfxboot-font.
+
+diff -Naurp gfxboot.orig/gfxboot-font.c gfxboot/gfxboot-font.c
+--- gfxboot.orig/gfxboot-font.c
++++ gfxboot/gfxboot-font.c
+@@ -845,7 +845,7 @@ char *search_font(char *font_path, char 
+   char *font_name = NULL;
+   char *cur_path, *sep;
+   struct stat sbuf;
+-  static char *suffix[] = { "", ".ttf", ".pfa", ".pfb", ".pcf.gz" };
++  static char *suffix[] = { "", ".ttf", ".pfa", ".pfb", ".pcf.gz", ".bdf" };
+ 
+   if(!font_path || !name) return NULL;
+ 

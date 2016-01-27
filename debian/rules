@@ -1,0 +1,93 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+SHELL := sh -e
+
+GFXBOOT_PATH = $(CURDIR)
+
+%:
+	dh ${@} --parallel
+
+override_dh_auto_build:
+	dh_auto_build -- CFLAGS="$(CFLAGS) $(CPPFLAGS)"
+
+	$(MAKE) -C doc doc
+
+	# gfxboot-dev
+	mkdir -p build/examples
+	cp -aL themes/example* build/examples
+
+	for _THEME in $$(cd build/examples && ls); \
+	do \
+		PATH=$(GFXBOOT_PATH):$${PATH} ADDDIR=$(GFXBOOT_PATH)/bin/adddir $(MAKE) -C build/examples/$${_THEME}; \
+	done
+
+	# gfxboot-themes
+	mkdir -p build
+	cp -aL themes build/themes
+	rm -rf build/themes/example*
+	rm -rf build/themes/test*
+
+	PATH=$(GFXBOOT_PATH):$${PATH} ADDDIR=$(GFXBOOT_PATH)/bin/adddir $(MAKE) -C build/themes/openSUSE/help-install
+	PATH=$(GFXBOOT_PATH):$${PATH} ADDDIR=$(GFXBOOT_PATH)/bin/adddir $(MAKE) -C build/themes/openSUSE
+
+	for _THEME in $$(cd build/themes && ls); \
+	do \
+		if [ "$${_THEME}" != "openSUSE" ]; \
+		then \
+			PATH=$(GFXBOOT_PATH):$${PATH} ADDDIR=$(GFXBOOT_PATH)/bin/adddir $(MAKE) -C build/themes/$${_THEME}; \
+		fi; \
+	done
+
+override_dh_auto_clean:
+	dh_auto_clean
+
+	[ ! -f doc/Makefile ] || $(MAKE) -C doc clean
+
+	-rm -rf build
+
+override_dh_auto_install:
+	dh_auto_install
+
+	install -D -m 0644 doc/gfxboot.8 debian/gfxboot/usr/share/man/man1/gfxboot.1
+
+	# Correcting program location
+	mv debian/tmp/usr/sbin debian/tmp/usr/bin
+	sed -i -e 's|^.TH GFXBOOT 8|.TH GFXBOOT 1|' debian/gfxboot/usr/share/man/man1/gfxboot.1
+
+	# Removing useless files
+	rm -rf debian/tmp/etc
+
+	# gfxboot-dev
+	for _THEME in $$(cd build/examples && ls); \
+	do \
+		install -D -m 0644 build/examples/$${_THEME}/bootlogo debian/gfxboot-dev/etc/bootsplash/$${_THEME}/cdrom/bootlogo; \
+		$(GFXBOOT_PATH)/bin/unpack_bootlogo debian/gfxboot-dev/etc/bootsplash/$${_THEME}/cdrom; \
+		mkdir -p debian/gfxboot-dev/usr/share/gfxboot/themes/$${_THEME}; \
+		cp -aL themes/$${_THEME}/* debian/gfxboot-dev/usr/share/gfxboot/themes/$${_THEME}; \
+	done
+
+	# gfxboot-themes
+	mkdir -p debian/gfxboot-themes/usr/share/gfxboot/themes
+
+	for _THEME in $$(cd build/themes && ls); \
+	do \
+		cp -aL build/themes/$${_THEME} debian/gfxboot-themes/usr/share/gfxboot/themes; \
+		cp -aL themes/openSUSE/Makefile debian/gfxboot-themes/usr/share/gfxboot/themes/$${_THEME}/Makefile; \
+		rm -f debian/gfxboot-themes/usr/share/gfxboot/themes/$${_THEME}/Makefile; \
+		install -D -m 0644 build/themes/$${_THEME}/bootlogo debian/gfxboot-themes/etc/bootsplash/themes/$${_THEME}/cdrom/bootlogo; \
+		$(GFXBOOT_PATH)/bin/unpack_bootlogo debian/gfxboot-themes/etc/bootsplash/themes/$${_THEME}/cdrom; \
+		mkdir -p debian/gfxboot-themes/etc/bootsplash/themes/$${_THEME}/bootloader; \
+		cp -aL build/themes/$${_THEME}/message build/themes/$${_THEME}/help-boot/*.hlp build/themes/$${_THEME}/po/*.tr debian/gfxboot-themes/etc/bootsplash/themes/$${_THEME}/bootloader; \
+	done
+
+override_dh_builddeb:
+	dh_builddeb -- -Zxz
+
+override_dh_fixperms:
+	dh_fixperms
+	find . debian -name "*.xcf" | xargs chmod 0644
+
+override_dh_install:
+	dh_install --fail-missing

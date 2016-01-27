@@ -1,0 +1,18 @@
+Author: Daniel Baumann <mail@daniel-baumann.ch>
+Description:
+ Replacing adddir location with absolute name in order to allow to compile the
+ themes from any location, not just /usr/share/gfxboot/themes/foo.
+
+Index: gfxboot-4.5.12/themes/openSUSE/Makefile
+===================================================================
+--- gfxboot-4.5.12.orig/themes/openSUSE/Makefile	2016-01-20 20:16:09.000000000 +0800
++++ gfxboot-4.5.12/themes/openSUSE/Makefile	2016-01-26 15:34:13.000000000 +0800
+@@ -10,7 +10,7 @@
+ PREPARED     = $(shell [ -f .prepared ] && echo 1)
+ endif
+ 
+-ADDDIR       = ../../bin/adddir
++ADDDIR       ?= /usr/share/gfxboot/bin/adddir
+ BFLAGS       = -O -v -L ../..
+ 
+ SUBDIRS      = fonts help-boot help-install po src

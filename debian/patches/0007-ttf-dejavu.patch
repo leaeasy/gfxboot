@@ -1,0 +1,80 @@
+Author: Daniel Baumann <mail@daniel-baumann.ch>
+Description:
+ gfxboot expects fonts to be in /usr/share/fonts/truetype et al,
+ not in subdirectories within like debian based systems do.
+ .
+ The proper fix is to make search_font() in gfxboot-font recursive,
+ however, for the time being we add the paths manually here.
+
+diff -Naurp gfxboot.orig/themes/example_02/Makefile gfxboot/themes/example_02/Makefile
+--- gfxboot.orig/themes/example_02/Makefile
++++ gfxboot/themes/example_02/Makefile
+@@ -16,7 +16,7 @@ bootlogo: example_*.bc font
+ 	$(GFXBOOT) --archive $@.dir --pack-archive $@
+ 
+ font:
+-	$(GFXBOOT_FONT) -v -f DejaVuSans:size=20 font.fnt >font.log
++	$(GFXBOOT_FONT) -v -p /usr/share/fonts/truetype/ttf-dejavu -f DejaVuSans:size=20 font.fnt >font.log
+ 
+ clean:
+ 	rm -rf *~ *.log *.dir bootlogo *.fnt
+diff -Naurp gfxboot.orig/themes/example_03/Makefile gfxboot/themes/example_03/Makefile
+--- gfxboot.orig/themes/example_03/Makefile
++++ gfxboot/themes/example_03/Makefile
+@@ -16,7 +16,7 @@ bootlogo: example_*.bc font
+ 	$(GFXBOOT) --archive $@.dir --pack-archive $@
+ 
+ font:
+-	$(GFXBOOT_FONT) -v -f DejaVuSans:size=20 font.fnt >font.log
++	$(GFXBOOT_FONT) -v -p /usr/share/fonts/truetype/ttf-dejavu -f DejaVuSans:size=20 font.fnt >font.log
+ 
+ clean:
+ 	rm -rf *~ *.log *.dir bootlogo *.fnt
+diff -Naurp gfxboot.orig/themes/example_04/Makefile gfxboot/themes/example_04/Makefile
+--- gfxboot.orig/themes/example_04/Makefile
++++ gfxboot/themes/example_04/Makefile
+@@ -16,7 +16,7 @@ bootlogo: example_*.bc font
+ 	$(GFXBOOT) --archive $@.dir --pack-archive $@
+ 
+ font:
+-	$(GFXBOOT_FONT) -v -f DejaVuSans:size=32 font.fnt >font.log
++	$(GFXBOOT_FONT) -v -p /usr/share/fonts/truetype/ttf-dejavu -f DejaVuSans:size=32 font.fnt >font.log
+ 
+ clean:
+ 	rm -rf *~ *.log *.dir bootlogo *.fnt
+diff -Naurp gfxboot.orig/themes/example_05/Makefile gfxboot/themes/example_05/Makefile
+--- gfxboot.orig/themes/example_05/Makefile
++++ gfxboot/themes/example_05/Makefile
+@@ -16,7 +16,7 @@ bootlogo: example_*.bc font
+ 	$(GFXBOOT) --archive $@.dir --pack-archive $@
+ 
+ font:
+-	$(GFXBOOT_FONT) -v -f DejaVuSans:size=32 font.fnt >font.log
++	$(GFXBOOT_FONT) -v -p /usr/share/fonts/truetype/ttf-dejavu -f DejaVuSans:size=32 font.fnt >font.log
+ 
+ clean:
+ 	rm -rf *~ *.log *.dir bootlogo *.fnt
+diff -Naurp gfxboot.orig/themes/example_06/Makefile gfxboot/themes/example_06/Makefile
+--- gfxboot.orig/themes/example_06/Makefile
++++ gfxboot/themes/example_06/Makefile
+@@ -20,7 +20,7 @@ bootlogo: example_*.bc font
+ 	@ln -snf bootlogo message
+ 
+ font:
+-	$(GFXBOOT_FONT) -v -f DejaVuSans:size=32 font.fnt >font.log
++	$(GFXBOOT_FONT) -v -p /usr/share/fonts/truetype/ttf-dejavu -f DejaVuSans:size=32 font.fnt >font.log
+ 
+ clean:
+ 	rm -rf *~ *.log *.dir bootlogo message *.fnt
+diff -Naurp gfxboot.orig/themes/example_07/Makefile gfxboot/themes/example_07/Makefile
+--- gfxboot.orig/themes/example_07/Makefile
++++ gfxboot/themes/example_07/Makefile
+@@ -20,7 +20,7 @@ bootlogo: example_*.bc font
+ 	@ln -snf bootlogo message
+ 
+ font:
+-	$(GFXBOOT_FONT) -v -f DejaVuSans:size=32 font.fnt >font.log
++	$(GFXBOOT_FONT) -v -p /usr/share/fonts/truetype/ttf-dejavu -f DejaVuSans:size=32 font.fnt >font.log
+ 
+ clean:
+ 	rm -rf *~ *.log *.dir bootlogo message *.fnt

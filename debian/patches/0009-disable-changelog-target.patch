@@ -1,0 +1,15 @@
+Author: lilongyu <leaeasy@gmail.com>
+Description:
+ Disable changelog target to avoid build error since the orig tarball is not a git repo.
+
+--- gfxboot-4.5.12.orig/Makefile
++++ gfxboot-4.5.12/Makefile
+@@ -12,7 +12,7 @@ THEMES	 = themes/upstream themes/openSUS
+ 
+ .PHONY: all clean distclean doc install installsrc themes
+ 
+-all:	changelog bin2c gfxboot-compile bincode gfxboot-font addblack
++all: bin2c gfxboot-compile bincode gfxboot-font addblack
+ 
+ changelog: $(GITDEPS)
+ 	$(GIT2LOG) --changelog changelog

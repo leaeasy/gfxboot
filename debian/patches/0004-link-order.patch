@@ -1,0 +1,15 @@
+Author: Colin Watson <cjwatson@ubuntu.com>
+Description: Fix link order with 'ld --as-needed' (Closes: #605771).
+
+diff -Naurp gfxboot.orig/Makefile gfxboot/Makefile
+--- gfxboot.orig/Makefile
++++ gfxboot/Makefile
+@@ -17,7 +17,7 @@ changelog: $(GITDEPS)
+ 	$(GIT2LOG) --changelog changelog
+ 
+ gfxboot-font: gfxboot-font.c
+-	$(CC) $(CFLAGS) -I /usr/include/freetype2 -lfreetype $< -o $@
++	$(CC) $(CFLAGS) -I /usr/include/freetype2 $< -lfreetype -o $@
+ 
+ gfxboot-compile: gfxboot-compile.c vocabulary.h bincode.h
+ 	$(CC) $(CFLAGS) $< -o $@
