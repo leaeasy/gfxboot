@@ -658,7 +658,7 @@ char *next_word(char **ptr)
 
   *word = 0;
 
-  while(isspace(*s)) if(*s++ == '\n') line++;
+  while(isspace((unsigned char) *s)) if(*s++ == '\n') line++;
 
   if(!*s) {
     *ptr = s;
@@ -757,7 +757,7 @@ char *next_word(char **ptr)
     word[n] = 0;
   }
   else {
-    while(!isspace(*s)) s++;
+    while(!isspace((unsigned char) *s)) s++;
   }
 
   if(!is_str) {
